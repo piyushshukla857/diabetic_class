@@ -1,0 +1,27 @@
+stages:
+  preprocess:
+    cmd: python src/data/dataset_ingestion.py
+    deps:
+      - data/external/dataset.csv
+    outs:
+      - data/processed/processed_data.csv
+    # Optionally, add params if preprocess script takes any parameters
+
+  train:
+    cmd: python src/models/train_model.py
+    deps:
+      - data/processed/processed_data.csv
+      - src/models/train_model.py
+    outs:
+      - models/xgboost_model.pkl
+    # params:
+    #   - params.yaml
+
+  # evaluate:
+  #   cmd: python src/evaluate.py
+  #   deps:
+  #     - models/xgboost_model.pkl
+  #     - data/processed/processed_data.csv
+  #     - src/evaluate.py
+  #   metrics:
+  #     - metrics/evaluation.json

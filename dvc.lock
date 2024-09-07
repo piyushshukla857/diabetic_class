@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python src/data/dataset_ingestion.py
+    deps:
+    - path: data/external/dataset.csv
+      hash: md5
+      md5: cb243b99d81d96e9aeb08944ce9ac066
+      size: 3810356
+    outs:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: b8147e0f09c64988fc6582e9c912b784
+      size: 4659041
+  train:
+    cmd: python src/models/train_model.py
+    deps:
+    - path: data/processed/processed_data.csv
+      hash: md5
+      md5: b8147e0f09c64988fc6582e9c912b784
+      size: 4659041
+    - path: src/models/train_model.py
+      hash: md5
+      md5: 7f64fc27bc519be9f57b7618ad700589
+      size: 1477
+    outs:
+    - path: models/xgboost_model.pkl
+      hash: md5
+      md5: 9d8c840d5c1caa286ed10f12b9334b37
+      size: 6851687

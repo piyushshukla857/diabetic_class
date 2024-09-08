@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diabetes Prediction</title>
+    <script>
+        async function sendData() {
+            // Get JSON input from the text area
+            const jsonInput = document.getElementById('jsonInput').value;
+            let data;
+
+            try {
+                // Parse the JSON input
+                data = JSON.parse(jsonInput);
+            } catch (error) {
+                document.getElementById('result').textContent = 'Invalid JSON format. Please correct and try again.';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5001/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data) // Send data as JSON
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById('result').textContent = `Prediction: ${result.prediction}`;
+                } else {
+                    document.getElementById('result').textContent = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error making prediction. Please try again.';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Diabetes Prediction</h1>
+    <form onsubmit="event.preventDefault(); sendData();">
+        <label for="jsonInput">Input Data (JSON format):</label><br>
+        <textarea id="jsonInput" rows="10" cols="50" placeholder='{"age": 45, "hypertension": 0, "heart_disease": 1, "bmi": 30.0, "HbA1c_level": 6.0, "blood_glucose_level": 150, "gender": "Female", "smoking_history": "never"}' required></textarea><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    <h2 id="result"></h2>
+</body>
+</html>

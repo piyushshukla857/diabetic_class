@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 import pandas as pd
 import pickle
 import xgboost as xgb
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # Load encoders and model
 with open('models/gender_ohe_columns.pkl', 'rb') as f:

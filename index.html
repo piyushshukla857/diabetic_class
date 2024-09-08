@@ -1,51 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Diabetes Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetes Prediction JSON Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Diabetes Prediction JSON Input</h1>
+    <textarea id="jsonInput">
+{
+  "gender": "Female",
+  "age": 80.0,
+  "hypertension": 0,
+  "heart_disease": 1,
+  "smoking_history": "never",
+  "bmi": 25.19,
+  "HbA1c_level": 6.6,
+  "blood_glucose_level": 140
+}
+    </textarea>
+    <button onclick="predict()">Predict</button>
+    <div id="result"></div>
+
     <script>
-        async function sendData() {
-            // Get JSON input from the text area
+        async function predict() {
             const jsonInput = document.getElementById('jsonInput').value;
-            let data;
-
+            const resultDiv = document.getElementById('result');
+            
             try {
-                // Parse the JSON input
-                data = JSON.parse(jsonInput);
-            } catch (error) {
-                document.getElementById('result').textContent = 'Invalid JSON format. Please correct and try again.';
-                return;
-            }
-
-            try {
+                // Parse the JSON input to ensure it's valid
+                const inputData = JSON.parse(jsonInput);
+                
                 const response = await fetch('http://127.0.0.1:5001/predict', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data) // Send data as JSON
+                    body: jsonInput
                 });
 
-                const result = await response.json();
-                if (response.ok) {
-                    document.getElementById('result').textContent = `Prediction: ${result.prediction}`;
-                } else {
-                    document.getElementById('result').textContent = `Error: ${result.error}`;
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+
+                const data = await response.json();
+                resultDiv.textContent = `Prediction: ${data.prediction === 0 ? 'No diabetes' : 'Diabetes'}`;
             } catch (error) {
-                document.getElementById('result').textContent = 'Error making prediction. Please try again.';
+                console.error('Error:', error);
+                resultDiv.innerHTML = `Error: ${error.message}<br>
+                    This could be due to:<br>
+                    - The Flask server not running on http://127.0.0.1:5001<br>
+                    - CORS not enabled on the server<br>
+                    - Network issues<br>
+                    Please check the console for more details.`;
             }
         }
     </script>
-</head>
-<body>
-    <h1>Diabetes Prediction</h1>
-    <form onsubmit="event.preventDefault(); sendData();">
-        <label for="jsonInput">Input Data (JSON format):</label><br>
-        <textarea id="jsonInput" rows="10" cols="50" placeholder='{"age": 45, "hypertension": 0, "heart_disease": 1, "bmi": 30.0, "HbA1c_level": 6.0, "blood_glucose_level": 150, "gender": "Female", "smoking_history": "never"}' required></textarea><br><br>
-
-        <input type="submit" value="Predict">
-    </form>
-
-    <h2 id="result"></h2>
 </body>
 </html>

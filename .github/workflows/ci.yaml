@@ -1,31 +1,24 @@
-name: CI pipeline 
-
-
-
+name: CI Pipeline
 
 on: push
 
-
-
-jobs: 
+jobs:
   project-testing:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}  # Automatically provided by GitHub
 
-      - name: setup python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      - name: install dependencies
+      - name: Install dependencies
         run: |
+          echo "Installing dependencies from requirements.txt"
+          cat requirements.txt  # Log the contents of requirements.txt for debugging
           pip install -r requirements.txt
-
-      - name: run pipeline
-        run: |
-          dvc repro

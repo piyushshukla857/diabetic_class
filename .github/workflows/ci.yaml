@@ -20,5 +20,5 @@ jobs:
       - name: Install dependencies
         run: |
           echo "Installing dependencies from requirements.txt"
-          cat requirements.txt  # Log the contents of requirements.txt for debugging
+          python -m pip install --upgrade pip
           pip install -r requirements.txt

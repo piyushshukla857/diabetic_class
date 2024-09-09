@@ -15,7 +15,7 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.actions }}
 
       - name: setup python
         uses: actions/setup-python@v4

@@ -1,6 +1,4 @@
 [core]
-    remote = myremote
-['remote "myremote"']
-    url = gdrive://1xyX3kcZzpO7fhxg46L3WldS1kevFI0lN
-    gdrive_client_id = 830464155050-r8ggpte4je3ungjm5d8h96o3bv0mndor.apps.googleusercontent.com
-    gdrive_client_secret = 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
+    remote = myremore
+['remote "myremore"']
+    url = s3://dvc-rem

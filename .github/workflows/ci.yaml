@@ -26,6 +26,10 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Pull data from DVC remote
+        run: |
+          dvc pull
+
       - name: run pipeline
         run: |
           dvc repro

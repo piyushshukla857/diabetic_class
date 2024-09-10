@@ -95,3 +95,5 @@ mlruns/
 tmp/
 
 mlartifacts/
+
+notes.txt

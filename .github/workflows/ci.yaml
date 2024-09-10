@@ -44,7 +44,6 @@ jobs:
       - name: Debug DVC configuration
         run: |
           dvc remote list
-          dvc remote modify myremote --local auth debug true
           cat .dvc/config
 
       - name: Clean local DVC files

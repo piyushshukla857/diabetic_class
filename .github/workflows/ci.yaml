@@ -75,7 +75,7 @@ jobs:
       - name: Build Docker image
         if: success()
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME}}/project:latest .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME}}/project:latest .
 
       
       - name: Push docker image to docker Hub

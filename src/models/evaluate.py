@@ -8,10 +8,10 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.model_selection import train_test_split
 import pickle
 
-# import dagshub
-# dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
+import dagshub
+dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
 
-mlflow.set_tracking_uri('http://127.0.0.1:5000')
+mlflow.set_tracking_uri('https://dagshub.com/piyushshukla857/diabetic_class.mlflow')
 
 
 

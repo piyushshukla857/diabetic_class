@@ -5,9 +5,10 @@ import os
 import dagshub
 
 
+import dagshub
+dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
 
-
-mlflow.set_tracking_uri('http://127.0.0.1:5000')
+mlflow.set_tracking_uri('https://dagshub.com/piyushshukla857/diabetic_class.mlflow')
 
 
 

@@ -22,9 +22,19 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: install dependencies
         run: |
           pip install -r requirements.txt
+
+      
 
 
       - name: Set up credentials
@@ -35,6 +45,10 @@ jobs:
           dvc remote add -d myremote s3://dvc-rem
           dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID
           dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY
+
+      - name: DVC pull with debugging
+        run: |
+          dvc pull -v 
 
       
 

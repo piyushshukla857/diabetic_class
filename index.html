@@ -55,7 +55,7 @@
                 // Parse the JSON input to ensure it's valid
                 const inputData = JSON.parse(jsonInput);
                 
-                const response = await fetch('http://127.0.0.1:5001/predict', {
+                const response = await fetch('http://localhost:5001/predict', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

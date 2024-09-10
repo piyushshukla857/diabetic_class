@@ -50,11 +50,6 @@ jobs:
         run: |
           dvc pull -v 
 
-      
-
-      
-
-
 
       - name: Run pipeline
         env:
@@ -67,3 +62,23 @@ jobs:
         env:
           DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
         run: python src/models/promote_model.py
+
+      
+      - name: Log in to Docker Hub
+        if: success()
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME}}
+          password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}
+      
+
+      - name: Build Docker image
+        if: success()
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME}}/project:latest .
+
+      
+      - name: Push docker image to docker Hub
+        if: success()
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USERNAME}}/project:latest

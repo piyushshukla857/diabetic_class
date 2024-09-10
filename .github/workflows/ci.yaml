@@ -47,9 +47,19 @@ jobs:
           rm -f models/xgboost_model.pkl
           rm -f reports/metrics.json
 
+      - name: Debug DVC status before pull
+        run: |
+          dvc status -v
+          dvc diff
+
       - name: Pull DVC data
         run: |
-          dvc pull -v  # -v for verbose output
+          dvc pull --force -v
+
+      - name: Debug DVC status after pull
+        run: |
+          dvc status -v
+          dvc diff
 
 
 

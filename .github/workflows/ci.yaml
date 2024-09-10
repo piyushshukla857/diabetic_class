@@ -47,6 +47,12 @@ jobs:
           rm -f models/xgboost_model.pkl
           rm -f reports/metrics.json
 
+      - name: Clean DVC cache
+        run: |
+          rm -rf .dvc/cache
+          dvc gc -w -f
+          dvc status -v
+
       - name: Debug DVC status before pull
         run: |
           dvc status -v

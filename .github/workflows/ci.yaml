@@ -41,6 +41,31 @@ jobs:
           dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID
           dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY
 
+      - name: Debug DVC configuration
+        run: |
+          dvc remote list
+          dvc remote modify myremote --local auth debug true
+          cat .dvc/config
+
+      - name: Clean local DVC files
+        run: |
+          rm -rf .dvc/cache
+          find . -name '*.dvc' -delete
+
+      - name: DVC pull with debugging
+        run: |
+          dvc pull -v --remote myremote --jobs 1 || true
+          dvc status -v
+          dvc doctor
+          ls -R
+
+      - name: Check S3 bucket contents
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 ls s3://dvc-rem --recursive
+
       - name: Clean untracked DVC files
         run: |
           rm -f data/processed/processed_data.csv

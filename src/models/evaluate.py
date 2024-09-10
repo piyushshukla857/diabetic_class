@@ -7,8 +7,15 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_curve, auc
 from sklearn.model_selection import train_test_split
 import pickle
+import os
 
 import dagshub
+
+dagshub_token = os.environ.get('DAGSHUB_PAT')
+if not dagshub_token:
+    raise ValueError("DAGSHUB_PAT environment variable is not set")
+
+# dagshub.auth.add_app_token(dagshub_token)
 dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
 
 mlflow.set_tracking_uri('https://dagshub.com/piyushshukla857/diabetic_class.mlflow')
@@ -26,20 +33,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 
 
-# Load model parameters
-# with open('reports/model_params.json', 'r') as f:
-#     model_params = json.load(f)
 
-# Reload the model with the parameters
-# model = XGBClassifier(**model_params)
-# model.fit(X_train, y_train)
-
-# # Predictions and evaluation
-# y_pred = model.predict(X_test)
-# accuracy = accuracy_score(y_test, y_pred)
-# precision = precision_score(y_test, y_pred)
-# recall = recall_score(y_test, y_pred)
-# f1 = f1_score(y_test, y_pred)
 
 def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
     """Save the model run ID and path to a JSON file."""
@@ -52,39 +46,6 @@ def save_model_info(run_id: str, model_path: str, file_path: str) -> None:
 # Set MLflow experiment
 mlflow.set_experiment("XGBoost dvc pipeline")
 
-# with mlflow.start_run():
-#     # Log metrics
-#     mlflow.log_metric("accuracy", accuracy)
-#     mlflow.log_metric("precision", precision)
-#     mlflow.log_metric("recall", recall)
-#     mlflow.log_metric("f1_score", f1)
-
-#     # Save metrics to JSON
-#     metrics = {
-#         "accuracy": accuracy,
-#         "precision": precision,
-#         "recall": recall,
-#         "f1_score": f1
-#     }
-#     with open('reports/metrics.json', 'w') as f:
-#         json.dump(metrics, f)
-#     mlflow.log_artifact('reports/metrics.json')
-
-#     # Generate and save ROC curve plot
-#     fpr, tpr, _ = roc_curve(y_test, model.predict_proba(X_test)[:,1])
-#     roc_auc = auc(fpr, tpr)
-
-#     plt.figure()
-#     plt.plot(fpr, tpr, color='darkorange', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
-#     plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-#     plt.xlim([0.0, 1.0])
-#     plt.ylim([0.0, 1.05])
-#     plt.xlabel('False Positive Rate')
-#     plt.ylabel('True Positive Rate')
-#     plt.title('Receiver Operating Characteristic')
-#     plt.legend(loc='lower right')
-#     plt.savefig('reports/figures/roc_curve.png')
-#     mlflow.log_artifact('reports/figures/roc_curve.png')
 
 
 with mlflow.start_run() as run:  # Start an MLflow run

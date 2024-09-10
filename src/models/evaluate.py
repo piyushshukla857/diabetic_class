@@ -27,8 +27,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 
 # Load model parameters
-with open('reports/model_params.json', 'r') as f:
-    model_params = json.load(f)
+# with open('reports/model_params.json', 'r') as f:
+#     model_params = json.load(f)
 
 # Reload the model with the parameters
 # model = XGBClassifier(**model_params)

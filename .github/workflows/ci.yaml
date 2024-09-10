@@ -26,11 +26,6 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-    
-
-      - name: Install DVC
-        run: |
-          pip install dvc dvc-s3  # or any other dvc-* package for your chosen remote
 
       - name: Set up credentials
         env:
@@ -46,10 +41,7 @@ jobs:
           dvc remote list
           cat .dvc/config
 
-      - name: Clean local DVC files
-        run: |
-          rm -rf .dvc/cache
-          find . -name '*.dvc' -delete
+      
 
       - name: DVC pull with debugging
         run: |
@@ -65,44 +57,18 @@ jobs:
         run: |
           aws s3 ls s3://dvc-rem --recursive
 
-      - name: Clean untracked DVC files
-        run: |
-          rm -f data/processed/processed_data.csv
-          rm -f models/xgboost_model.pkl
-          rm -f reports/metrics.json
+      
 
-      - name: Clean DVC cache
-        run: |
-          rm -rf .dvc/cache
-          dvc gc -w -f
-          dvc status -v
+      
 
-      - name: Debug DVC status before pull
-        run: |
-          dvc status -v
-          dvc diff
+      
+      
 
-      - name: Pull DVC data
-        run: |
-          dvc pull --force -v
-
-      - name: Debug DVC status after pull
-        run: |
-          dvc status -v
-          dvc diff
+     
 
 
 
-      - name: Debug file structure
-        run: |
-          pwd
-          ls -R
-          dvc status
-
-      - name: Debug DVC config
-        run: |
-          cat .dvc/config
-          dvc remote list
+      
 
       - name: Run pipeline
         run: |

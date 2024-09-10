@@ -16,9 +16,13 @@ if not dagshub_token:
     raise ValueError("DAGSHUB_PAT environment variable is not set")
 
 # dagshub.auth.add_app_token(dagshub_token)
-dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
+# dagshub.init(repo_owner='piyushshukla857', repo_name='diabetic_class', mlflow=True)
 
-mlflow.set_tracking_uri('https://dagshub.com/piyushshukla857/diabetic_class.mlflow')
+# mlflow.set_tracking_uri('https://dagshub.com/piyushshukla857/diabetic_class.mlflow')
+
+mlflow.set_tracking_uri(f"https://dagshub.com/piyushshukla857/diabetic_class.mlflow")
+os.environ['MLFLOW_TRACKING_USERNAME'] = 'piyushshukla857'
+os.environ['MLFLOW_TRACKING_PASSWORD'] = dagshub_token
 
 
 

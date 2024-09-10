@@ -61,3 +61,9 @@ jobs:
             DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
         run: |
           dvc repro
+
+      - name: Promote model to production
+        if: success()
+        env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+        run: python src/models/promote_model.py
